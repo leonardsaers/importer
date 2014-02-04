@@ -78,7 +78,14 @@ public abstract class AbstractCharStreamTagger
         if (!documentAccepted(reference, metadata, parsed)) {
             return;
         }
-        InputStreamReader is = new InputStreamReader(document);
+        
+        String contentType = metadata.getString("Content-Type");
+        contentType = contentType.replaceAll(".*charset=", "");
+        if (contentType==null || contentType==""){
+            contentType="utf-8";
+        }
+        
+        InputStreamReader is = new InputStreamReader(document, contentType);
         tagTextDocument(reference, is, metadata, parsed);
     }
 
